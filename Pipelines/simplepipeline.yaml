@@ -1,0 +1,24 @@
+trigger:
+  - master
+
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+
+
+steps:
+  - script: echo 'Hello az 400 Tuesday'
+    displayName: 'Executing echo command'
+  - task: AzureCLI@2
+    displayName: 'Creating the resource group'
+    inputs:
+      azureSubscription: manualserviceconnection
+      scriptType: pscore
+      scriptLocation: inlineScript
+      inlineScript: |
+        az group create --location westeurope --name az400-pipeline2-mlc-rg
+
+
+
+
