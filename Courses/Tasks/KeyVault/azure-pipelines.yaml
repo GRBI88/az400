@@ -1,0 +1,27 @@
+trigger:
+  - master
+
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - name: location
+    value: 'westeurope'
+
+
+steps:
+  - script: echo 'Starting Key Vault demo'
+  - task: AzureKeyVault@2
+    inputs:
+      azureSubscription: manualserviceconnection
+      KeyVaultName: az400mlcvault
+      SecretsFilter: '*'
+      RunAsPreJob: false
+  - script: echo $(sqlconnection)
+  - script: cat secret.txt
+
+
+
+
+
