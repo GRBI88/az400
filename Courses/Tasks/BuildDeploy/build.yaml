@@ -1,0 +1,39 @@
+trigger:
+  - master
+
+pool:
+  vmImage: ubuntu-latest
+
+
+stages:
+  - stage: Build
+    jobs:
+      - job:
+        displayName: 'building and preparing for CD'
+        steps:
+          - script: echo 'Building'
+            displayName: 'Displaying Building'
+
+          - task: DotNetCoreCLI@2
+            displayName: 'Build and Publish'
+            inputs:
+              command: 'publish'
+              publishWebProjects: false
+              arguments: "-o $(Build.ArtifactStagingDirectory)/WebApp --configuration Release"
+
+          - task: PublishPipelineArtifact@1 
+            displayName: 'Publish artifact'
+            inputs: 
+              targetPath: "$(Build.ArtifactStagingDirectory)/WebApp"
+              artifact: WebApp
+              publishLocation: "pipeline"
+
+  - template: Deploy.yaml
+    parameters:
+      Environment: Test
+      WebAppName: az400mlcweb
+
+  - template: Deploy.yaml
+    parameters:
+      Environment: Prod
+      WebAppName: az400mlcwebprod
