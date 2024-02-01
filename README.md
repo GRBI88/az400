@@ -32,3 +32,13 @@ choco install git -y
 ### Predefined Variables
 
 https://learn.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops&tabs=yaml
+
+
+### WebApp Deploy to slot
+
+```yaml
+
+                    deployToSlotOrASE: true
+                    slotName: preprod
+
+```
