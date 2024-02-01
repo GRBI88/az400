@@ -27,3 +27,8 @@ choco install git -y
   git config --global user.name "John Doe"
 
 ```
+
+
+### Predefined Variables
+
+https://learn.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops&tabs=yaml
