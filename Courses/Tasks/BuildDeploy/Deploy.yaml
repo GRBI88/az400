@@ -16,3 +16,10 @@ stages:
             deploy:
               steps:
                 - script: echo ${{ parameters.WebAppName }}
+
+                - task: AzureWebApp@1
+                  inputs:
+                    azureSubscription: manualserviceconnection
+                    appType: 'webApp'
+                    appName: ${{ parameters.WebAppName }}
+                    package: '$(Pipeline.workspace)/WebApp/*.zip'
