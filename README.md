@@ -42,3 +42,41 @@ https://learn.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=az
                     slotName: preprod
 
 ```
+
+
+### Tagging
+
+```powershell
+### Annotated
+git tag -a v1.4 -m "my version 1.4"
+
+### Lightweight
+git tag v1.5
+
+### Push (Tags are only local)
+git push origin v1.4
+
+### In DevOps you can ONLY do annotated
+
+```
+
+#### Trigger on tags
+
+```yaml
+
+trigger:
+  tags:
+    include:
+    - 'v*'
+
+```
+
+
+### Artifact Feeds
+
+Maven -> Java
+npm -> node
+NuGet -> C#
+Python Packages (PIP) -> Python
+
+
