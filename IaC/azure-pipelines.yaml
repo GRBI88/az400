@@ -1,0 +1,26 @@
+trigger:
+  - main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - name: scName
+    value: manualserviceconnection
+  - name: location 
+    value: westeurope
+  - name: appName
+    value: az400superudemo
+  - name: env
+    value: test
+steps:
+  - task: AzureResourceManagerTemplateDeployment@3
+    displayName: 'Deploy all infrastructure'
+    inputs:
+      connectedServiceName: $(scName)
+      location: $(location)
+      resourceGroupName: '$(appName)-$(env)-rg'
+      csmFile: ./Templates/infrastructure.bicep
+      overrideParameters:
+        -appName $(appName)
+        -env $(env)
