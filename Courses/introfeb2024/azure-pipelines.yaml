@@ -1,0 +1,68 @@
+trigger:
+  - master
+
+pool:
+  vmImage: ubuntu-latest
+
+
+variables:
+  - name: serviceConnection
+    value: myfirstconnection
+  - name: webAppName
+    value: devopsdemomlc
+stages:
+  - stage: Build
+    jobs:
+      - job: buildjob
+        steps:
+          - script: echo 'Hello world again!!!!'
+            
+          # - task: AzureCLI@2  
+          #   displayName: 'Create Resource Group in Azure'
+          #   inputs:
+          #     azureSubscription: $(serviceConnection)
+          #     scriptType: pscore
+          #     scriptLocation: inlineScript
+          #     inlineScript: |
+          #       az group create --name devopsdemo2-rg  --location westeurope
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: 'publish'
+              publishWebProjects: true
+              arguments: "-o $(Build.ArtifactStagingDirectory)/WebApp --configuration Release"
+          - task: PublishPipelineArtifact@1
+            displayName: "Publish Web App to Pipeline"
+            inputs:
+              targetPath: "$(Build.ArtifactStagingDirectory)/WebApp"
+              artifact: WebApp
+              publishLocation: "pipeline"
+          - task: CopyFiles@2
+            inputs:
+              SourceFolder: "$(Build.Repository.LocalPath)"
+              Contents: templates/*'
+              TargetFolder: "$(Build.Repository.LocalPath)/templates"
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: "$(Build.Repository.LocalPath)/templates"
+              artifact: templates
+              publishLocation: "pipeline"
+
+  ## test environment
+  - template: deploy.yaml
+    parameters:
+      environment: test
+      serviceConnection: $(serviceConnection)
+      webAppName: devopsdemomlctest
+
+
+  ## prod environment
+  - template: deploy.yaml
+    parameters:
+      environment: prod
+      serviceConnection: $(serviceConnection)
+      webAppName: devopsdemomlc
+
+
+
+      
+

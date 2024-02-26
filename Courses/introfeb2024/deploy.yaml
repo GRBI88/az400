@@ -1,0 +1,36 @@
+parameters:
+  - name: environment
+    type: string
+  - name: serviceConnection
+    type: string
+  - name: webAppName
+    type: string
+
+
+stages:
+  - stage: ${{ parameters.environment }}Release
+    variables:
+      - group: group-${{ parameters.environment }}
+    displayName: Release to ${{ parameters.environment }}
+    jobs:
+      - deployment: ${{ parameters.environment }}
+        displayName: Release to ${{ parameters.environment }}
+        environment: ${{ parameters.environment }}
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureWebApp@1
+                  inputs:
+                    azureSubscription: ${{ parameters.serviceConnection }}
+                    appType: 'webApp'
+                    appName: ${{ parameters.webAppName }}
+                    package: "$(Pipeline.Workspace)/WebApp/*.zip"
+                - task: AzureCLI@2
+                  displayName: 'Deploy storage Account' 
+                  inputs:
+                    azureSubscription: ${{ parameters.serviceConnection }}
+                    scriptType: pscore
+                    scriptLocation: inlineScript
+                    inlineScript: |
+                      az deployment group create  --resource-group devopsdemo2-rg  --template-file $(Pipeline.Workspace)/templates/storageaccount.bicep --parameters storageAccountName=$(storageAccountName)
