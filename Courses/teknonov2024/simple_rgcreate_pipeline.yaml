@@ -1,0 +1,17 @@
+trigger:
+  - master
+
+pool:
+  vmImage: ubuntu-latest
+ 
+steps:
+  - script: echo 'Hello3'
+    displayName: 'Saying hello'
+  - task: AzureCLI@2
+    displayName: Create Resource Group
+    inputs:
+      azureSubscription: replace
+      scriptType: pscore
+      scriptLocation: inlineScript
+      inlineScript: |
+        az group create --name rg-az400-replaceWithInitials-frompipeline2 --location germanywestcentral
