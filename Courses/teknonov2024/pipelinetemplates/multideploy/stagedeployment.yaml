@@ -1,0 +1,32 @@
+parameters:
+  - name: env
+    type: string
+  - name: webAppName
+    type: string
+  - name: serviceConnectionName
+    type: string
+
+stages:
+  - stage: ${{ parameters.env }}   
+    displayName: Release to ${{ parameters.env }}
+    jobs:
+      - deployment: deploy${{ parameters.env }}
+        displayName: 'Deploying to ${{ parameters.env }}'
+        environment: ${{ parameters.env }}
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - script: echo 'Deploy to ${{ parameters.env }}'
+                - script: ls $(Pipeline.Workspace)
+                - task: AzureWebApp@1
+                  displayName: 'deploy code to Azure Web app $(webAppName)'
+                  inputs:
+                    azureSubscription: ${{ parameters.serviceConnectionName }}
+                    appType: 'webAppLinux'
+                    appName: ${{ parameters.webAppName }}
+                    package: '$(Pipeline.Workspace)/webApi/**/*.zip'
+
+
+ 
+      
