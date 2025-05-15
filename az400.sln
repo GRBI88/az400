@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Containers", "Containers", "{4F116140-C397-41D0-9440-DFC215DCB2ED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "az400finaldemo", "Containers\az400finaldemo\az400finaldemo.csproj", "{7ABA61BB-814A-4003-B5D9-2418EF1C1C64}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7ABA61BB-814A-4003-B5D9-2418EF1C1C64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ABA61BB-814A-4003-B5D9-2418EF1C1C64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ABA61BB-814A-4003-B5D9-2418EF1C1C64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ABA61BB-814A-4003-B5D9-2418EF1C1C64}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7ABA61BB-814A-4003-B5D9-2418EF1C1C64} = {4F116140-C397-41D0-9440-DFC215DCB2ED}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ADEA1CBA-8EE1-4F3F-9A4A-26A098892810}
+	EndGlobalSection
+EndGlobal

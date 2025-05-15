@@ -1,0 +1,32 @@
+trigger:
+  - master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - name: webAppName
+    value: az401mlc
+  - name: codePath
+    value: /code/mywebapi
+  - name: serviceConnectionName
+    value: teachingtestconnectionfed
+  - name: slotName
+    value: pre
+steps:
+- task: DotNetCoreCLI@2
+  displayName: 'publish webapi code'
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    projects: '**/*.csproj'
+
+- task: AzureWebApp@1
+  displayName: 'deploy code to Azure Web app $(webAppName)'
+  inputs:
+    azureSubscription: $(serviceConnectionName)
+    appType: 'webAppLinux'
+    appName: $(webAppName)
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    deployToSlotOrASE: true
+    slotName: $(slotName)

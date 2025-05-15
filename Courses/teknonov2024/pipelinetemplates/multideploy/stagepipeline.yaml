@@ -1,0 +1,42 @@
+trigger:
+  - master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables: 
+  - name: scNameTest
+    value: 'teachingtestconnectionfed'
+  - name: scNameProd
+    value: 'teachingtestconnectionfed'
+stages:
+  - stage: Build
+    jobs:
+      - job: Build1
+        steps:
+          - task: DotNetCoreCLI@2
+            displayName: 'publish webapi code'
+            inputs:
+              command: 'publish'
+              publishWebProjects: true
+              projects: '**/*.csproj'
+              arguments: "-o $(Build.ArtifactStagingDirectory)/WebApi"
+          - task: PublishPipelineArtifact@1
+            displayName: 'Store the published files'
+            inputs:
+              targetPath: "$(Build.ArtifactStagingDirectory)/WebApi"
+              artifact: webApi
+              publishLocation: "pipeline"
+
+
+  - template: stagedeployment.yaml
+    parameters:
+      env: test
+      webAppName: az404mlctest
+      serviceConnectionName: $(scNameTest)
+
+  - template: stagedeployment.yaml
+    parameters:
+      env: prod
+      webAppName: az404mlcprod
+      serviceConnectionName: $(scNameProd)
