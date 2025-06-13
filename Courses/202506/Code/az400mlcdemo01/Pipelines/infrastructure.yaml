@@ -1,0 +1,36 @@
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - IaC/**
+      - Pipelines/infrastructure.yaml
+
+## if IaC is altered
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - group: GroupCommon
+  - name: rgName 
+    value: rg-az400mlcinfrastructure-test
+  - name: connectionName
+    value: testconnection
+  - name: templateFileLocation
+    value: IaC/infrastructure.bicep
+  - name: env
+    value: test
+steps:
+  ###- script: az group create!!
+  - task: AzureResourceManagerTemplateDeployment@3
+    displayName: 'Deploy infrastructure template to Azure'
+    inputs:
+      azureResourceManagerConnection: $(connectionName)
+      resourceGroupName: $(rgName)
+      csmFile: $(templateFileLocation)
+      location: $(location)
+      overrideParameters:
+        -appName az400friday
+        -env $(env)

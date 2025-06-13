@@ -1,0 +1,84 @@
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - Code/**
+      - Pipelines/build_and_deploy.yaml
+      
+ ## If Code is altered
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - group: GroupCommon
+  - name: solutionPath
+    value: "**/Code/**/*.sln"
+  - name: apiProjectPath
+    value: "**/Code/**/az400demoapi.csproj"
+  - name: connectionName
+    value: testconnection
+  - name: rgName
+    value: rg-az400mlcfrompipeline
+  - name: webAppName
+    value: az400mlcwebapp1
+
+steps:
+  # - script: echo 'Hello students'
+  #   displayName: 'Saying hello to the students'
+  # - script: ls
+  #   displayName: 'listing all files'
+  # - task: DotNetCoreCLI@2
+  #   displayName: 'Restore the code'
+  #   inputs:
+  #     command: 'restore'
+  #     projects: $(solutionPath)
+  # - task: DotNetCoreCLI@2
+  #   displayName: 'Build the code'
+  #   inputs:
+  #     command: 'build'
+  #     projects: $(solutionPath)      
+  # - task: DotNetCoreCLI@2
+  #   displayName: 'Test the code'
+  #   inputs:
+  #     command: 'test'
+  #     projects: $(solutionPath)
+  - task: DotNetCoreCLI@2
+    displayName: 'Publish the code'
+    inputs:
+      command: 'publish'
+      projects: $(apiProjectPath)
+      publishWebProjects: false
+      arguments: '-o $(Build.ArtifactStagingDirectory)/WebApp --configuration Release'
+      zipAfterPublish: true
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish the web app files to persistent Pipeline'
+    inputs: 
+      targetPath: '$(Build.ArtifactStagingDirectory)/WebApp'
+      artifact: 'WebApp'
+      publishLocation: 'pipeline'
+
+  
+  ## Publish to an Azure Web App
+  ## Create a resource group in Azure
+  ## Azure CLI
+  - task: AzureCLI@2
+    displayName: 'Create a Resource Group'
+    inputs:
+      azureSubscription: $(connectionName)
+      scriptType: pscore
+      scriptLocation: inlineScript
+      inlineScript: |
+        az group create --name $(rgName) --location $(location)
+
+  - task: AzureWebApp@1
+    displayName: 'Publish published code to Azure web app'
+    inputs: 
+      azureSubscription: $(connectionName)
+      appType: 'webApp'
+      appName: $(webAppName)
+      package: '$(Build.ArtifactStagingDirectory)/WebApp/*.zip'
+
+
+

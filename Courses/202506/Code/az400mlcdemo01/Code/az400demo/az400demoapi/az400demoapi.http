@@ -1,0 +1,6 @@
+@az400demoapi_HostAddress = http://localhost:5025
+
+GET {{az400demoapi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
