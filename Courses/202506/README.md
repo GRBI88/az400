@@ -442,3 +442,190 @@ ARM TEMPLATE   (repo)
 
 
 ```
+
+
+### Day 3
+
+```
+
+"code" -> Source Code only   (source controls)   -> diff
+-> commit 
+
+
+Author: chapters (text)
+
+.cs
+.cs
+.csproj  (reference)
+
+c#
+
+mac
+Linux
+win
+
+dotnet build -> different dll's
+
+.dll (bin)/obj
+.exe (bin)
+
+dotnet restore
+
+
+.gitignore
+
+
+Service Connection  -> ARM (Azure Management Plane) (Public Cloud)
+
+
+
+
+
+
+CRUD  -> Azure Resources (VM, VNET, WebApp, Resource Group, ACR....)
+
+-> Build container  -> Azure Container Reg (Data plane)
+
+-> Web App code!!! ->  DATA PLANE
+
+
+
+
+
+DEVOPS -> (internet) AZURE 
+
+Containers:
+
+- "Mini VM"
+
+
+
+App 
+
+RunTimes/Prereq.
+
+-------------------------
+Containers = Linux
+
+
+
+
+
+Server (VM), Server2
+
+
+RunTimes in Containers
+
+App1  App2
+JR17  JRE18
+
+
+-------------------
+Elastic Search
+JRE
+...
+-------------------
+(OS)/Kernel
+
+
+Containers (HDD), Containers (HDD)
+----------------------------------
+HDD
+Linux
+
+---------------------------------------
+Container:
+
+Kubernetes (AKS)
+Container Apps
+Container Instances
+
+Azure Container Registry (DockerHub) (nuget, npm)
+----------------------------------------------------
+Azure WebApp (Code, Container)
+
+Bring your own code
+Bring your own container
+
+-----------------------------------------------------
+
+Bring my own code:
+   -> MS supports the Runtimes  (.NET 8 -> 8.0.1)
+$$$
+
+Bring my own container:
+   -> Self responsible for the runtime
+       -> Keep your versions as long you want!!! 
+$$$
+
+--------------------------------------------------
+
+Container strategy
+
+Azure Web App -> AWS -> Kubernetes -> on-prem 
+
+ - MS Creates a 3 month secret THAT CANNOT BE CHANGED IN DEVOPS!!!!
+ - MS auto gives the contributor role!!!! CANNOT CREATE ROLE ASSIGNMENT!!
+       - More and more devops stuff requires IaC (biceps)
+       - More and more Azure should be done using Managed Identy (AND ROLE ASSIGN)
+       - Owner!!! (2-3 identities being owner on each sub)
+
+Manual
+   - Create the App reg in entra
+   - Create the secret
+   - Azure: Give Role Assignment (owner) to the app reg
+   - Create a Manual/Secret Servic Connection in DEVOPS
+     - The secret can be changed in DEVOPS when always expires!!!
+
+
+Federation   (NO SECRETS NEEDED)
+
+Microsoft Devops (Own Identity Provider)
+
+
+Sub1
+ENTRA
+VNET!!
+
+
+Resource Group 1
+
+ R1
+ R2  Key/Password  (MI/Role Assignment)
+
+
+RG 2
+
+  R3
+  R4
+
+
+Sub2
+
+RG
+
+
+Role Assignment
+   - Who (Entra ID, user, group, MI, ....)
+   - What (Owner, Contributor, AcrPull) (Secret reader)
+   - Where (Scope) -> Sub, RG, Resource
+
+Management Groups
+    Subscriptions
+       Resource Groups
+          Resources
+             Sub-Resources
+
+
+
+Cont + OWner  
+
+   Resource Group (MortensPlayground)
+
+Key Vault (Resource)
+
+
+
+
+
+```
