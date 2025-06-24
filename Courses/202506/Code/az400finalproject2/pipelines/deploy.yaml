@@ -1,0 +1,35 @@
+parameters:
+  - name: connectionName
+    type: string
+  - name: appName
+    type: string
+  - name: env
+    type: string
+
+
+
+stages:
+  - stage: ${{ parameters.env }}
+    displayName: Publish to Azure ${{ parameters.env }}
+    variables:
+      - name: webAppName
+        value: ${{ parameters.appName }}${{ parameters.env }}
+    jobs:
+    - deployment: ${{ parameters.env }}
+      environment: ${{ parameters.env }}
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - download: current
+                artifact: 'WebApp'
+              - script: echo 'Deploy test'
+              - script: ls '$(Pipeline.Workspace)'
+              - task: AzureWebApp@1
+                displayName: 'Publish published code to test Azure web app'
+                inputs: 
+                  azureSubscription: ${{ parameters.connectionName }}
+                  appType: 'webApp'
+                  appName: $(webAppName)
+                  package: '$(Pipeline.Workspace)/WebApp/*.zip'
+  

@@ -1,0 +1,49 @@
+trigger: 
+  - master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - name: apiProjectPath
+    value: '**/code/**/*.csproj'
+  - name: appName
+    value: az400final
+
+stages:
+  - stage: build_stage
+    jobs:
+      - job: build_job
+        steps:
+          - script: echo 'Hello'
+          
+          - task: DotNetCoreCLI@2
+            displayName: 'publish .NET code locally'
+            inputs: 
+              command: 'publish'
+              projects: $(apiProjectPath)
+              publishWebProjects: false
+              arguments: '-o $(Build.ArtifactStagingDirectory)/WebApp --configuration Release'
+              zipAfterPublish: true
+
+          - task: PublishPipelineArtifact@1
+            displayName: 'Publish the web app files to persistent Pipeline'
+            inputs: 
+              targetPath: '$(Build.ArtifactStagingDirectory)/WebApp'
+              artifact: 'WebApp'
+              publishLocation: 'pipeline'
+    
+  - template: deploy.yaml
+    parameters:
+      connectionName: testconnection
+      appName: $(appName)
+      env: test
+
+  - template: deploy.yaml
+    parameters:
+      connectionName: prodconnection
+      appName: $(appName)
+      env: prod      
+
+
+        

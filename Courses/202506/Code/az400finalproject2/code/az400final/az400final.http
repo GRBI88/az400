@@ -1,0 +1,6 @@
+@az400final_HostAddress = http://localhost:5188
+
+GET {{az400final_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
