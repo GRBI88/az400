@@ -1,3 +1,5 @@
+[[_TOC_]]
+
 ## Notes from course
 
 ```
@@ -627,5 +629,23 @@ Key Vault (Resource)
 
 
 
+
+```
+
+### Certification missing
+
+```
+
+Lab 01 -> Boards (*)
+
+Lab 08 -> Classic Release pipelines  (CERT!!) (*)
+       . YAML 
+            -> SAVED in DevOps DB
+
+                trigger / gate (env) 
+
+Lab 11 -> Feature flags
+Lab 13 -> Package (artifacts / feed)
+Lab 14 -> Monitor/ Performance   (Azure Load tester) -> Task: .yaml   (2 min.) (*)
 
 ```
